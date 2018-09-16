@@ -15,6 +15,26 @@
 				</div>
 			  </div>
 			</div>
+
+			@foreach ($relatedTransactions as $word => $transactions)
+				<br />
+				<div class="card">
+					<div class="card-body">
+						<h5 style="font-size: 24px;" class="card-title text-center">{{$word}}</h5>
+						<table class="table table-dark">
+			              <tbody>
+			                  @foreach ($transactions as $transaction) 
+			                    <tr>
+				                    <td>{{$transaction->datum}}</td>
+				                    <td>{{$transaction->transaktion}}</td>
+				                    <td>{{$transaction->belopp}}</td>
+			                    </tr>
+			                  @endforeach
+			              </tbody>
+			            </table>
+					</div>
+				</div>
+			@endforeach
         </div>
     </div>
 </div>

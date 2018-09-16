@@ -15,9 +15,21 @@ class TransactionsController extends Controller
 
     public function index()
     {
-        $transactions = App\Transaction::orderBy('datum', 'DESC')->get();
+        $transactionsActionRequired = App\Transaction::orderBy('datum', 'DESC')
+            ->where('action_required', '=', 1)->get();
 
-        return view('home', ['transactions' => $transactions]);
+        $transactionsApproved = App\Transaction::orderBy('datum', 'DESC')
+            ->where('approved', '=', 1)->get();
+
+        $transactionsAll = App\Transaction::orderBy('datum', 'DESC')
+            ->get();
+
+        return view('home', [
+            'transactionsActionRequired' => $transactionsActionRequired,
+            'transactionsApproved' => $transactionsApproved,
+            'transactionsAll' => $transactionsAll,
+        ]);
+
     }
 
     public function single(Request $request)
@@ -33,7 +45,22 @@ class TransactionsController extends Controller
             ->first();
         }
 
-        return view('single', ['transaction' => $transaction]);   
+        $words = $transaction->transaktion;
+        $words = str_replace('Kortköp', '', $words);
+        $words = explode(' ', $words);
+
+        $relatedTransactions = [];
+        foreach ($words as $word) {
+            if ($word) {
+                $relatedTransactions[$word] = App\Transaction::where('transaktion', 'like', '%'.$word.'%')
+                    ->orderBy('datum', 'DESC')->get();
+            }
+        }
+
+        return view('single', [
+            'transaction' => $transaction,
+            'relatedTransactions' => $relatedTransactions,
+        ]);   
     }
 
     public function approve($id)
