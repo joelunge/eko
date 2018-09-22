@@ -16,7 +16,7 @@ class TransactionsController extends Controller
     public function index()
     {
         $transactionsActionRequired = App\Transaction::orderBy('datum', 'DESC')
-            ->where('action_required', '=', 1)->get();
+            ->where('approved', '=', 0)->get();
 
         $transactionsApproved = App\Transaction::orderBy('datum', 'DESC')
             ->where('approved', '=', 1)->get();
@@ -78,7 +78,7 @@ class TransactionsController extends Controller
     {
         $transaction = App\Transaction::find($id);
 
-        $transaction->action_required = 1;
+        $transaction->approved = 0;
 
         $transaction->save();
 
