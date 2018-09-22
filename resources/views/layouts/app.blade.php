@@ -20,7 +20,20 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
+    <script>document.addEventListener("DOMContentLoaded",function(){window.addEventListener("pagehide",function(a){window.name+="\ue000"+window.pageXOffset+"\ue000"+window.pageYOffset});if(window.name&&-1<window.name.indexOf("\ue000")){var a=window.name.split("\ue000");3<=a.length&&(window.name=a[0],window.scrollTo(parseFloat(a[a.length-2]),parseFloat(a[a.length-1])))}});
+    </script>
+    <script>
+        $(document).ready(function() {
+            if (localStorage.getItem("scroll") != null) {
+                $(window).scrollTop(localStorage.getItem("scroll"));
+            }
 
+            $(window).on("scroll", function() {
+                localStorage.setItem("scroll", $(window).scrollTop());
+            });
+
+        });
+    </script>
 </head>
 <body>
     <div id="app">
