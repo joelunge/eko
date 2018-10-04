@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App;
 use H;
+use Auth;
 
 class TransactionsController extends Controller
 {
@@ -16,12 +17,17 @@ class TransactionsController extends Controller
     public function index()
     {
         $transactionsActionRequired = App\Transaction::orderBy('datum', 'DESC')
-            ->where('approved', '=', 0)->get();
+            ->where('approved', '=', 0)
+            ->where('user_id', Auth::id())
+            ->get();
 
         $transactionsApproved = App\Transaction::orderBy('datum', 'DESC')
-            ->where('approved', '=', 1)->get();
+            ->where('approved', '=', 1)
+            ->where('user_id', Auth::id())
+            ->get();
 
         $transactionsAll = App\Transaction::orderBy('datum', 'DESC')
+            ->where('user_id', Auth::id())
             ->get();
 
         return view('home', [
